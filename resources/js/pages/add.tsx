@@ -29,7 +29,7 @@ export default function AddPage() {
         <h1 className="font-display font-bold text-xl">Share a find</h1>
       </header>
 
-      <main className="px-5 pb-32 space-y-5">
+      <main className="px-5 pb-32 lg:pb-8 space-y-5">
         {/* Type selector */}
         <div className="grid grid-cols-3 gap-2 p-1 bg-accent rounded-2xl">
           {TABS.map((t) => (

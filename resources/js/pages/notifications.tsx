@@ -20,7 +20,7 @@ export default function NotificationsPage() {
         <h1 className="font-display font-bold text-2xl">Activity</h1>
       </header>
       
-      <main className="px-5 pb-32 space-y-2">
+      <main className="px-5 pb-32 lg:pb-8 space-y-2">
         {NOTIFICATIONS.map((n, i) => (
           <div
             key={n.id}

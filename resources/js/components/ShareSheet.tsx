@@ -78,7 +78,7 @@ export function ShareSheet({
 
   // Portal renders outside any transformed/overflow-hidden ancestor
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-end justify-center">
+    <div className="fixed inset-0 z-[9999] flex items-end lg:items-center justify-center">
       {/* Backdrop */}
       <button
         aria-label="Close share sheet"
@@ -88,7 +88,7 @@ export function ShareSheet({
 
       {/* Sheet */}
       <div
-        className="relative w-full max-w-[430px] bg-background rounded-t-3xl shadow-2xl max-h-[80vh] flex flex-col"
+        className="relative w-full lg:max-w-lg bg-background rounded-t-3xl lg:rounded-2xl shadow-2xl max-h-[80vh] lg:max-h-[70vh] flex flex-col"
         style={{ animation: "slideUp 0.25s cubic-bezier(0.16,1,0.3,1) both" }}
       >
         {/* Handle */}
