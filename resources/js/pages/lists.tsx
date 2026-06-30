@@ -31,7 +31,7 @@ export default function ListsPage() {
         </div>
       </header>
 
-      <main className="px-5 pb-32 space-y-8">
+      <main className="px-5 pb-32 lg:pb-8 space-y-8">
         <section className="space-y-3">
           {myLists.map((list, i) => {
             const Icon = VIS_ICON[list.visibility];

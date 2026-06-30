@@ -27,7 +27,7 @@ export default function EventsPage() {
         </div>
       </header>
 
-      <main className="px-5 pb-32 space-y-4">
+      <main className="px-5 pb-32 lg:pb-8 space-y-4">
         {EVENTS.map((e, i) => (
           <EventCard key={e.id} event={e} delay={i * 80} />
         ))}

@@ -29,7 +29,7 @@ export default function MePage() {
         </div>
       </header>
 
-      <main className="px-5 pb-32">
+      <main className="px-5 pb-32 lg:pb-8">
         <div className="flex flex-col items-center text-center mb-6">
           <Avatar initials={ME.initials} size="xl" />
           <h1 className="font-display font-bold text-2xl mt-3">{ME.name}</h1>

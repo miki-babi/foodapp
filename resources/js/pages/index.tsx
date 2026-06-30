@@ -63,7 +63,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <main className="px-5 pb-32 space-y-6">
+      <main className="px-5 pb-32 lg:pb-8 space-y-6">
         <PlaceCard place={place} />
         <ListCard list={list} />
         <PlaceCard place={place2} delay={300} />

@@ -147,7 +147,7 @@ export default function ChatPage({ id }: { id: string }) {
       </div>
 
       {/* Composer */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-background/95 backdrop-blur-md border-t border-border px-4 py-3 pb-24 z-40">
+      <div className="fixed bottom-0 left-0 right-0 w-full bg-background/95 backdrop-blur-md border-t border-border px-4 py-3 pb-24 lg:pb-4 z-40">
         <div className="flex items-end gap-2">
           <Link
             href="/"

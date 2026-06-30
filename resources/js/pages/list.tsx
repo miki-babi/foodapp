@@ -1,9 +1,9 @@
 import { Link, router, Head } from "@inertiajs/react";
 import { useState } from "react";
-import { ArrowLeft, Camera, Share2, Download, Pencil } from "lucide-react";
+import { ArrowLeft, Camera, Share2, Download, Pencil, ChevronDown, ChevronUp } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { ShareSheet } from "@/components/ShareSheet";
-import { LISTS, type BucketList } from "@/lib/mock-data";
+import { LISTS, PLACES, type BucketList } from "@/lib/mock-data";
 import { Avatar } from "@/components/Avatar";
 
 export default function ListPage({ id }: { id: string }) {
@@ -22,14 +22,10 @@ export default function ListPage({ id }: { id: string }) {
   const [items, setItems] = useState<BucketList["items"]>(initial.items);
   const [shareOpen, setShareOpen] = useState(false);
   const [shareCount, setShareCount] = useState<number>(initial.shares ?? Math.floor(initial.steals / 2));
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const isMine = initial.creator.handle === "me";
 
-  const sorted = [...items].sort((a, b) => Number(a.done) - Number(b.done));
   const completed = items.filter((i) => i.done).length;
-
-  function toggle(id: string) {
-    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, done: !i.done } : i)));
-  }
 
   return (
     <AppShell>
@@ -54,7 +50,7 @@ export default function ListPage({ id }: { id: string }) {
         </button>
       </header>
 
-      <main className="px-5 pb-32">
+      <main className="px-5 pb-32 lg:pb-8">
         <div className="mb-2 flex items-center gap-2">
           {!isMine && (
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -76,7 +72,6 @@ export default function ListPage({ id }: { id: string }) {
 
         <div className="flex gap-4 mt-4 mb-6 text-xs">
           <Stat label="items" value={initial.itemCount} />
-          <Stat label="done" value={completed} />
           <Stat label="steals" value={initial.steals} />
         </div>
 
@@ -92,55 +87,81 @@ export default function ListPage({ id }: { id: string }) {
           </div>
         ) : null}
 
-        <ul className="space-y-2">
-          {sorted.map((item) => (
+        {/* Featured Gallery */}
+        {initial.cover && initial.cover.length > 0 && (
+          <div className="flex gap-3 overflow-x-auto pb-4 mb-4 snap-x no-scrollbar -mx-5 px-5">
+            {initial.cover.map((img, i) => (
+              <img 
+                key={i} 
+                src={img} 
+                alt="Cover gallery" 
+                className="h-48 w-40 object-cover rounded-2xl shrink-0 snap-center shadow-sm" 
+              />
+            ))}
+          </div>
+        )}
+
+        <ul className="space-y-3">
+          {items.map((item, index) => {
+            const place = item.placeId ? PLACES.find(p => p.id === item.placeId) : null;
+            const isExpanded = expandedId === item.id;
+            
+            return (
             <li
               key={item.id}
-              className="flex items-center gap-3 bg-card rounded-2xl p-4 ring-1 ring-black/[0.04]"
+              className="bg-card rounded-2xl ring-1 ring-black/[0.04] overflow-hidden transition-all duration-300 shadow-sm"
             >
-              <button
-                onClick={() => toggle(item.id)}
-                className={`size-6 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors ${
-                  item.done
-                    ? "bg-emerald-500 border-emerald-500"
-                    : "border-border bg-card"
-                }`}
+              <div 
+                className="flex items-center gap-3 p-4 cursor-pointer active:bg-accent/50"
+                onClick={() => setExpandedId(isExpanded ? null : item.id)}
               >
-                {item.done && (
-                  <svg
-                    className="size-4 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    strokeWidth={3}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                )}
-              </button>
-              {item.placeId ? (
-                <Link
-                  href={`/place/${item.placeId}`}
-                  className={`flex-1 text-sm font-semibold ${
-                    item.done ? "line-through text-muted-foreground" : ""
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ) : (
-                <span
-                  className={`flex-1 text-sm font-semibold ${
-                    item.done ? "line-through text-muted-foreground" : ""
-                  }`}
-                >
+                <div className="size-7 rounded-full bg-accent shrink-0 flex items-center justify-center text-xs font-bold text-muted-foreground">
+                  {index + 1}
+                </div>
+                
+                <span className="flex-1 text-sm font-semibold">
                   {item.name}
                 </span>
+
+                <div className="text-muted-foreground">
+                  {isExpanded ? <ChevronUp className="size-5" /> : <ChevronDown className="size-5" />}
+                </div>
+              </div>
+
+              {/* Accordion Content */}
+              {isExpanded && (
+                <div className="px-4 pb-4 pt-1 border-t border-border/50 animate-in fade-in slide-in-from-top-2">
+                  {place ? (
+                    <div className="flex gap-4 items-start mt-3">
+                      <img 
+                        src={place.photo} 
+                        alt={place.name} 
+                        className="size-20 rounded-xl object-cover shadow-sm shrink-0" 
+                      />
+                      <div className="flex flex-col gap-1">
+                        <Link href={`/place/${place.id}`} className="font-semibold text-sm hover:underline">
+                          {place.name}
+                        </Link>
+                        <p className="text-xs text-muted-foreground flex items-center gap-1">
+                          <span className="inline-block size-1.5 rounded-full bg-primary/50"></span>
+                          {place.neighborhood} • {place.category}
+                        </p>
+                        <div className="mt-1 flex items-center gap-2">
+                          <span className="text-xs font-medium bg-accent px-2 py-0.5 rounded-md">
+                            {place.rating} ★
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mt-2 text-sm text-muted-foreground italic px-2">
+                      More details coming soon...
+                    </div>
+                  )}
+                </div>
               )}
-              <button className="size-8 rounded-lg bg-accent flex items-center justify-center text-muted-foreground">
-                <Camera className="size-4" />
-              </button>
             </li>
-          ))}
+          )})}
         </ul>
       </main>
 
@@ -164,3 +185,4 @@ function Stat({ label, value }: { label: string; value: number }) {
     </div>
   );
 }
+

@@ -86,7 +86,7 @@ export default function ChatsPage() {
         </div>
       )}
 
-      <main className="px-5 pt-3 pb-32 space-y-1.5">
+      <main className="px-5 pt-3 pb-32 lg:pb-8 space-y-1.5">
         {CHATS.map((c, i) => {
           const last = c.messages[c.messages.length - 1];
           const preview = last?.text

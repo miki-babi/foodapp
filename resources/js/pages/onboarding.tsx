@@ -16,7 +16,7 @@ export default function Onboarding() {
   return (
     <AppShell>
       <Head title="Welcome to Oasis" />
-      <div className="min-h-screen flex flex-col px-6 py-10 pb-32">
+      <div className="min-h-screen flex flex-col px-6 py-10 pb-32 lg:pb-8">
         {step > 0 && (
           <div className="flex justify-center gap-1.5 mb-6">
             {[0, 1, 2, 3].map((i) => (

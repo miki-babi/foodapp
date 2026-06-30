@@ -43,7 +43,7 @@ export default function PlacePage({ id }: { id: string }) {
         </button>
       </div>
 
-      <main className="px-5 pb-32 -mt-6 relative space-y-6">
+      <main className="px-5 pb-32 lg:pb-8 -mt-6 relative space-y-6">
         <div className="bg-card rounded-3xl p-5 ring-1 ring-black/[0.04] shadow-sm">
           <h1 className="font-display font-bold text-3xl text-balance leading-tight">
             {place.name}
